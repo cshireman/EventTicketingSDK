@@ -22,9 +22,11 @@ let package = Package(
     targets: [
         .target(
             name: "EventTicketingSDK",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources/EventTicketingSDK"),
         .testTarget(
             name: "EventTicketingSDKTests",
-            dependencies: ["EventTicketingSDK"])
+            dependencies: ["EventTicketingSDK"],
+            path: "Tests/EventTicketingSDKTests")
     ]
 )
