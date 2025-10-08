@@ -8,6 +8,7 @@ import Foundation
 
 public struct Configuration: Sendable {
     public let baseURL: URL
+    public let webSocketURL: URL
     public let apiKey: String
     public let environment: Environment
     public let timeout: TimeInterval
@@ -20,6 +21,7 @@ public struct Configuration: Sendable {
 
     public static let `default` = Configuration(
         baseURL: URL(string: "http://localhost:8080")!,
+        webSocketURL: URL(string: "ws://localhost:8080/ws")!,
         apiKey: "",
         environment: .development,
         timeout: 30,
@@ -27,11 +29,13 @@ public struct Configuration: Sendable {
 
     public init(
         baseURL: URL,
+        webSocketURL: URL? = nil,
         apiKey: String,
         environment: Environment = .production,
         timeout: TimeInterval = 30,
     ) {
         self.baseURL = baseURL
+        self.webSocketURL = webSocketURL ?? URL(string: baseURL.absoluteString.replacingOccurrences(of: "http", with: "ws") + "/ws")!
         self.apiKey = apiKey
         self.environment = environment
         self.timeout = timeout

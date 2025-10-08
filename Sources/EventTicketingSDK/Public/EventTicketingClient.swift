@@ -15,7 +15,6 @@ public final class EventTicketingClient: Sendable {
     private let orderService: OrderService
 
     private init(_ config: Configuration = .default) {
-        // Initialize services with default configuration
         let networkClient = NetworkClient(configuration: config)
         let cacheManager = CacheManager()
 
