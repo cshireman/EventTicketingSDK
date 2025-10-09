@@ -8,7 +8,7 @@
 @MainActor
 public final class EventTicketingClient: Sendable {
 
-    public static let shared = EventTicketingClient()
+    public static var shared = EventTicketingClient()
 
     private let eventService: EventService
     private let ticketService: TicketService
@@ -28,6 +28,10 @@ public final class EventTicketingClient: Sendable {
         self.orderService = OrderService(
             networkClient: networkClient
         )
+    }
+
+    public static func configure(_ config: Configuration) {
+        EventTicketingClient.shared = .init(config)
     }
 
     // MARK: - Public API
@@ -53,10 +57,7 @@ public final class EventTicketingClient: Sendable {
     }
 
     /// Reserve tickets (holds for X minutes)
-    public func reserveTickets(
-        ticketIDs: [String],
-        eventID: String
-    ) async throws -> TicketReservation {
+    public func reserveTickets(ticketIDs: [String], eventID: String) async throws -> TicketReservation {
         try await ticketService.reserveTickets(
             ticketIDs: ticketIDs,
             eventID: eventID
@@ -64,10 +65,7 @@ public final class EventTicketingClient: Sendable {
     }
 
     /// Purchase tickets
-    public func purchaseTickets(
-        reservation: TicketReservation,
-        paymentMethod: PaymentMethod
-    ) async throws -> Order {
+    public func purchaseTickets(reservation: TicketReservation, paymentMethod: PaymentMethod) async throws -> Order {
         try await orderService.purchaseTickets(
             reservation: reservation,
             paymentMethod: paymentMethod

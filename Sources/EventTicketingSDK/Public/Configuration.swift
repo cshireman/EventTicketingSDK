@@ -35,7 +35,7 @@ public struct Configuration: Sendable {
         timeout: TimeInterval = 30,
     ) {
         self.baseURL = baseURL
-        self.webSocketURL = webSocketURL ?? URL(string: baseURL.absoluteString.replacingOccurrences(of: "http", with: "ws") + "/ws")!
+        self.webSocketURL = webSocketURL ?? baseURL.toWebSocket()!
         self.apiKey = apiKey
         self.environment = environment
         self.timeout = timeout

@@ -3,7 +3,6 @@
 [![Swift Version](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
 [![Platform](https://img.shields.io/badge/platform-iOS%2017%2B-lightgrey.svg)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![CI Status](https://github.com/cshireman/EventTicketingSDK/workflows/CI/badge.svg)](https://github.com/cshireman/EventTicketingSDK/actions)
 
 A modern, Swift-native SDK for event ticketing platforms. Built with Swift 6, SwiftUI, and modern concurrency patterns.
 
