@@ -227,7 +227,7 @@ actor DefaultNetworkClient: NetworkClient {
         }
         
         return EventUpdate(
-            eventID: message.eventId,
+            eventId: message.eventId,
             type: updateType,
             timestamp: message.timestamp
         )

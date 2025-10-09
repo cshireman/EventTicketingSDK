@@ -7,12 +7,12 @@
 import Foundation
 
 public struct EventUpdate: Sendable {
-    public let eventID: String
+    public let eventId: String
     public let type: UpdateType
     public let timestamp: Date
     
-    public init(eventID: String, type: UpdateType, timestamp: Date) {
-        self.eventID = eventID
+    public init(eventId: String, type: UpdateType, timestamp: Date) {
+        self.eventId = eventId
         self.type = type
         self.timestamp = timestamp
     }

@@ -12,57 +12,6 @@ import Foundation
 @Suite("EventService Tests")
 struct EventServiceTests {
     
-    // MARK: - Test Data Helpers
-    
-    private func createTestEvent(id: String = "test-event-1", name: String = "Test Event") -> Event {
-        let venue = Venue(
-            id: "venue-1",
-            name: "Test Venue",
-            address: "123 Test St",
-            city: "Test City",
-            state: "TS",
-            capacity: 1000
-        )
-        
-        let ticketType = TicketType(
-            id: "ticket-1",
-            name: "General Admission",
-            description: "Standard ticket",
-            price: 50.00,
-            availableCount: 100
-        )
-        
-        return Event(
-            id: id,
-            name: name,
-            description: "A test event",
-            venue: venue,
-            date: Date().addingTimeInterval(86400), // Tomorrow
-            doors: Date().addingTimeInterval(86400 - 3600), // 1 hour before event
-            imageURL: URL(string: "https://example.com/image.jpg"),
-            ticketTypes: [ticketType],
-            status: .onSale
-        )
-    }
-    
-    private func createMultipleTestEvents(count: Int) -> [Event] {
-        return (1...count).map { index in
-            createTestEvent(id: "event-\(index)", name: "Event \(index)")
-        }
-    }
-    
-    private func createEventService(
-        mockNetworkClient: MockNetworkClient? = nil,
-        cacheManager: CacheManager? = nil
-    ) async -> (EventService, MockNetworkClient, CacheManager) {
-        let mockClient = mockNetworkClient ?? MockNetworkClient()
-        let cache = cacheManager ?? CacheManager()
-        let service = EventService(networkClient: mockClient, cacheManager: cache)
-        return (service, mockClient, cache)
-    }
-    
-    // MARK: - Fetch Events Tests
-    
     @Test("Fetch events from network when cache is empty")
     func fetchEventsFromNetwork() async throws {
         let (service, mockClient, _) = await createEventService()
@@ -119,7 +68,7 @@ struct EventServiceTests {
         let _ = try await service.fetchEvents()
 
         // Verify events were cached
-        let cachedEvents = await cacheManager.getCachedEvents()
+        let cachedEvents = await cacheManager.getCachedEvents()?.sorted(by: { $0.id < $1.id })
         #expect(cachedEvents?.count == 2, "Should cache fetched events")
         #expect(cachedEvents?[0].id == testEvents[0].id, "Should cache correct events")
     }
@@ -322,9 +271,9 @@ struct EventServiceTests {
         
         // Setup mock stream updates
         let mockUpdates = [
-            EventUpdate(eventID: eventID, type: .ticketsAvailable(count: 50), timestamp: Date()),
-            EventUpdate(eventID: eventID, type: .priceChanged(newPrice: 60.00), timestamp: Date().addingTimeInterval(60)),
-            EventUpdate(eventID: eventID, type: .soldOut, timestamp: Date().addingTimeInterval(120))
+            EventUpdate(eventId: eventID, type: .ticketsAvailable(count: 50), timestamp: Date()),
+            EventUpdate(eventId: eventID, type: .priceChanged(newPrice: 60.00), timestamp: Date().addingTimeInterval(60)),
+            EventUpdate(eventId: eventID, type: .soldOut, timestamp: Date().addingTimeInterval(120))
         ]
         await mockClient.setMockStreamUpdates(for: eventID, updates: mockUpdates)
         

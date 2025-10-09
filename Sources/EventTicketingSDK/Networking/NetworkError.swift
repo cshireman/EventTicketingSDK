@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public enum NetworkError: LocalizedError, Sendable {
+public enum NetworkError: LocalizedError, Sendable, Equatable {
     case invalidURL
     case invalidResponse
     case badRequest
@@ -40,6 +40,28 @@ public enum NetworkError: LocalizedError, Sendable {
             return "Unknown error (status code: \(statusCode))"
         case .noConnection:
             return "No internet connection"
+        }
+    }
+    
+    // MARK: - Equatable Conformance
+    
+    public static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
+        switch (lhs, rhs) {
+        case (.invalidURL, .invalidURL),
+             (.invalidResponse, .invalidResponse),
+             (.badRequest, .badRequest),
+             (.unauthorized, .unauthorized),
+             (.notFound, .notFound),
+             (.rateLimited, .rateLimited),
+             (.serverError, .serverError),
+             (.noConnection, .noConnection):
+            return true
+        case (.decodingFailed(let lhsError), .decodingFailed(let rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+        case (.unknown(let lhsStatusCode), .unknown(let rhsStatusCode)):
+            return lhsStatusCode == rhsStatusCode
+        default:
+            return false
         }
     }
 }

@@ -12,47 +12,6 @@ import Foundation
 @Suite("CacheManager Tests")
 struct CacheManagerTests {
     
-    // MARK: - Test Data Helpers
-    
-    private func createTestEvent(id: String = "test-event-1", name: String = "Test Event") -> Event {
-        let venue = Venue(
-            id: "venue-1",
-            name: "Test Venue",
-            address: "123 Test St",
-            city: "Test City",
-            state: "TS",
-            capacity: 1000
-        )
-        
-        let ticketType = TicketType(
-            id: "ticket-1",
-            name: "General Admission",
-            description: "Standard ticket",
-            price: 50.00,
-            availableCount: 100
-        )
-        
-        return Event(
-            id: id,
-            name: name,
-            description: "A test event",
-            venue: venue,
-            date: Date().addingTimeInterval(86400), // Tomorrow
-            doors: Date().addingTimeInterval(86400 - 3600), // 1 hour before event
-            imageURL: URL(string: "https://example.com/image.jpg"),
-            ticketTypes: [ticketType],
-            status: .onSale
-        )
-    }
-    
-    private func createMultipleTestEvents(count: Int) -> [Event] {
-        return (1...count).map { index in
-            createTestEvent(id: "event-\(index)", name: "Event \(index)")
-        }
-    }
-    
-    // MARK: - Cache Event Tests
-    
     @Test("Cache single event successfully")
     func cacheEvent() async throws {
         let cacheManager = CacheManager()

@@ -12,68 +12,6 @@ import Foundation
 @Suite("OrderService Tests")
 struct OrderServiceTests {
     
-    // MARK: - Test Data Helpers
-    
-    private func createTestTicketType(id: String = "ticket-type-1") -> TicketType {
-        TicketType(
-            id: id,
-            name: "General Admission",
-            description: "Standard ticket",
-            price: 50.00,
-            availableCount: 100
-        )
-    }
-    
-    private func createTestTicket(id: String = "ticket-1", eventID: String = "event-1") -> Ticket {
-        Ticket(
-            id: id,
-            eventId: eventID,
-            section: "A",
-            row: "1",
-            seat: "15",
-            price: 50.00,
-            type: createTestTicketType(),
-            available: true
-        )
-    }
-    
-    private func createTestTicketReservation(reservationID: String = "reservation-1", eventID: String = "event-1") -> TicketReservation {
-        TicketReservation(
-            reservationID: reservationID,
-            tickets: [createTestTicket(eventID: eventID)],
-            expiresAt: Date().addingTimeInterval(900), // 15 minutes from now
-            total: 50.00
-        )
-    }
-    
-    private func createTestPaymentMethod(type: PaymentMethod.PaymentType = .creditCard) -> PaymentMethod {
-        PaymentMethod(type: type, token: "test-payment-token")
-    }
-    
-    private func createTestOrder(id: String = "order-1", eventID: String = "event-1", status: Order.OrderStatus = .confirmed) -> Order {
-        Order(
-            id: id,
-            tickets: [createTestTicket(id: "ticket-\(id)", eventID: eventID)],
-            total: 50.00,
-            status: status,
-            purchaseDate: Date(),
-            qrCode: "QR123456789"
-        )
-    }
-    
-    private func createTestRefundRequest(id: String = "refund-1", orderID: String = "order-1", reason: String = "Event cancelled") -> RefundRequest {
-        RefundRequest(
-            id: id,
-            orderId: orderID,
-            amount: 50.00,
-            reason: reason,
-            status: .pending,
-            requestDate: Date()
-        )
-    }
-    
-    // MARK: - Purchase Tickets Tests
-    
     @Test("Purchase tickets successfully")
     func purchaseTicketsSuccess() async throws {
         // Arrange
@@ -86,7 +24,7 @@ struct OrderServiceTests {
         let expectedOrder = createTestOrder(eventID: eventID)
         
         await mockClient.setMockResponse(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationID, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
         ), response: expectedOrder)
         
         // Act
@@ -115,7 +53,7 @@ struct OrderServiceTests {
         let expectedOrder = createTestOrder(eventID: eventID)
         
         await mockClient.setMockResponse(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationID, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
         ), response: expectedOrder)
         
         // Act
@@ -139,7 +77,7 @@ struct OrderServiceTests {
         let paymentMethod = createTestPaymentMethod()
         
         await mockClient.setMockError(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationID, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
         ), error: .serverError)
         
         // Act & Assert
@@ -161,7 +99,7 @@ struct OrderServiceTests {
         let paymentMethod = createTestPaymentMethod()
         
         await mockClient.setMockError(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationID, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
         ), error: .serverError)
         
         // Act & Assert
@@ -471,7 +409,7 @@ struct OrderServiceTests {
         
         await mockClient.setMockResponse(
             for: .purchaseTicketsWithPayment(
-                PurchaseRequest(reservationID: reservation.reservationID, paymentMethod: paymentMethod)
+                PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
             ),
             response: confirmedOrder
         )

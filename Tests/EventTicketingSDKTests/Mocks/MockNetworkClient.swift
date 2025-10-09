@@ -27,8 +27,8 @@ actor MockNetworkClient: NetworkClient {
     private var mockStreamUpdates: [String: [EventUpdate]] = [:]
     
     /// Tracks which requests have been made
-    private var requestHistory: [MockRequest] = []
-    
+    internal var requestHistory: [MockRequest] = []
+
     // MARK: - Configuration
     
     private let configuration: Configuration
@@ -137,7 +137,7 @@ actor MockNetworkClient: NetworkClient {
     
     // MARK: - Private Helper Methods
     
-    private func endpointKey(_ endpoint: Endpoint) -> String {
+    func endpointKey(_ endpoint: Endpoint) -> String {
         switch endpoint {
         case .events:
             return "events"
@@ -206,188 +206,6 @@ actor MockNetworkClient: NetworkClient {
         }
         
         continuation.finish()
-    }
-}
-
-// MARK: - Supporting Types
-
-/// Represents a request that was made to the mock network client
-struct MockRequest: Sendable {
-    let endpointKey: String
-    let endpoint: Endpoint
-    let timestamp: Date
-}
-
-// MARK: - Convenience Factory Methods
-
-extension MockNetworkClient {
-    
-    /// Create mock responses for common test scenarios
-    static func withCommonMockData() -> MockNetworkClient {
-        let mockClient = MockNetworkClient()
-        
-        Task {
-            await mockClient.setupCommonMockResponses()
-        }
-        
-        return mockClient
-    }
-    
-    private func setupCommonMockResponses() {
-        // Mock events list
-        let events = createMockEvents()
-        setMockResponse(for: .events, response: events)
-        
-        // Mock individual events
-        for event in events {
-            setMockResponse(for: .event(id: event.id), response: event)
-        }
-        
-        // Mock search results
-        setMockResponse(for: .searchEvents(query: "test"), response: [events.first!])
-        
-        // Mock available tickets
-        let tickets = createMockTickets()
-        for event in events {
-            setMockResponse(for: .availableTickets(eventID: event.id), response: tickets)
-        }
-        
-        // Mock stream updates
-        let updates = createMockEventUpdates(eventID: events.first!.id)
-        setMockStreamUpdates(for: events.first!.id, updates: updates)
-    }
-    
-    private func createMockEvents() -> [Event] {
-        let venue = Venue(
-            id: "venue-1",
-            name: "Mock Venue",
-            address: "123 Test Street",
-            city: "Test City",
-            state: "TS",
-            capacity: 1000
-        )
-        
-        let ticketType = TicketType(
-            id: "ticket-type-1",
-            name: "General Admission",
-            description: "Standard ticket",
-            price: 50.00,
-            availableCount: 100
-        )
-        
-        return [
-            Event(
-                id: "event-1",
-                name: "Mock Event 1",
-                description: "A test event for mocking",
-                venue: venue,
-                date: Date().addingTimeInterval(86400), // Tomorrow
-                doors: Date().addingTimeInterval(86400 - 3600), // 1 hour before
-                imageURL: URL(string: "https://example.com/event1.jpg"),
-                ticketTypes: [ticketType],
-                status: .onSale
-            ),
-            Event(
-                id: "event-2",
-                name: "Mock Event 2",
-                description: "Another test event",
-                venue: venue,
-                date: Date().addingTimeInterval(172800), // Day after tomorrow
-                doors: Date().addingTimeInterval(172800 - 3600),
-                imageURL: URL(string: "https://example.com/event2.jpg"),
-                ticketTypes: [ticketType],
-                status: .upcoming
-            )
-        ]
-    }
-    
-    private func createMockTickets() -> [Ticket] {
-        let ticketType = TicketType(
-            id: "ticket-type-1",
-            name: "General Admission",
-            description: "Standard ticket",
-            price: 50.00,
-            availableCount: 100
-        )
-        
-        return [
-            Ticket(
-                id: "ticket-1",
-                eventId: "event-1",
-                section: "General",
-                row: nil,
-                seat: nil,
-                price: 50.00,
-                type: ticketType,
-                available: true
-            ),
-            Ticket(
-                id: "ticket-2",
-                eventId: "event-1",
-                section: "General",
-                row: nil,
-                seat: nil,
-                price: 50.00,
-                type: ticketType,
-                available: true
-            )
-        ]
-    }
-    
-    private func createMockEventUpdates(eventID: String) -> [EventUpdate] {
-        return [
-            EventUpdate(
-                eventID: eventID,
-                type: .ticketsAvailable(count: 50),
-                timestamp: Date()
-            ),
-            EventUpdate(
-                eventID: eventID,
-                type: .priceChanged(newPrice: 55.00),
-                timestamp: Date().addingTimeInterval(60)
-            ),
-            EventUpdate(
-                eventID: eventID,
-                type: .soldOut,
-                timestamp: Date().addingTimeInterval(120)
-            )
-        ]
-    }
-}
-
-// MARK: - Test Helper Extensions
-
-extension MockNetworkClient {
-    
-    /// Simulate various error scenarios for testing
-    func simulateNetworkError(_ error: NetworkError, for endpoint: Endpoint) {
-        setMockError(for: endpoint, error: error)
-    }
-    
-    /// Simulate slow network conditions
-    func simulateSlowNetwork(delay: TimeInterval = 2.0) {
-        networkDelay = delay
-    }
-    
-    /// Simulate offline conditions
-    func simulateOffline() {
-        isOffline = true
-    }
-    
-    /// Simulate back online
-    func simulateOnline() {
-        isOffline = false
-    }
-    
-    /// Verify that a specific endpoint was called with expected frequency
-    func verifyRequestCount(for endpoint: Endpoint, expectedCount: Int) -> Bool {
-        return getRequestCount(for: endpoint) == expectedCount
-    }
-    
-    /// Get the most recent request to a specific endpoint
-    func getLastRequest(to endpoint: Endpoint) -> MockRequest? {
-        let key = endpointKey(endpoint)
-        return requestHistory.last { $0.endpointKey == key }
     }
 }
 

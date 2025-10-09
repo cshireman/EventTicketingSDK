@@ -21,7 +21,7 @@ actor OrderService {
         paymentMethod: PaymentMethod
     ) async throws -> Order {
         let purchaseRequest = PurchaseRequest(
-            reservationID: reservation.reservationID,
+            reservationID: reservation.reservationId,
             paymentMethod: paymentMethod
         )
 
