@@ -6,7 +6,16 @@
 //
 import Foundation
 
-actor NetworkClient {
+// MARK: - NetworkClient Protocol
+
+protocol NetworkClient: Actor {
+    func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T
+    func streamUpdates(eventID: String) -> AsyncStream<EventUpdate>
+}
+
+// MARK: - Default NetworkClient Implementation
+
+actor DefaultNetworkClient: NetworkClient {
 
     private let session: URLSession
     private let configuration: Configuration

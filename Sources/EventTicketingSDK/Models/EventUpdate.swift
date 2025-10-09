@@ -11,6 +11,12 @@ public struct EventUpdate: Sendable {
     public let type: UpdateType
     public let timestamp: Date
     
+    public init(eventID: String, type: UpdateType, timestamp: Date) {
+        self.eventID = eventID
+        self.type = type
+        self.timestamp = timestamp
+    }
+    
     public enum UpdateType: Sendable {
         case ticketsAvailable(count: Int)
         case soldOut

@@ -8,7 +8,7 @@ import Foundation
 
 public struct RefundRequest: Codable, Identifiable, Sendable {
     public let id: String
-    public let orderID: String
+    public let orderId: String
     public let amount: Decimal
     public let reason: String
     public let status: RefundStatus

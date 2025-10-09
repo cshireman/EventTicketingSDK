@@ -7,10 +7,10 @@
 
 actor EventService {
 
-    private let networkClient: NetworkClient
+    private let networkClient: any NetworkClient
     private let cacheManager: CacheManager
 
-    init(networkClient: NetworkClient, cacheManager: CacheManager) {
+    init(networkClient: any NetworkClient, cacheManager: CacheManager) {
         self.networkClient = networkClient
         self.cacheManager = cacheManager
     }

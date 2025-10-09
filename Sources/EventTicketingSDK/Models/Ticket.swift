@@ -8,7 +8,7 @@ import Foundation
 
 public struct Ticket: Codable, Identifiable, Sendable {
     public let id: String
-    public let eventID: String
+    public let eventId: String
     public let section: String
     public let row: String?
     public let seat: String?
