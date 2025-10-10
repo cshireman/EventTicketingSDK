@@ -218,20 +218,17 @@ open EventTicketingDemo.xcodeproj
 
 ### Running the Backend
 
-```bash
-cd EventTicketingAPI
-swift run
-```
+The backend API server is available in a separate repository:
+[EventTicketingAPI](https://github.com/cshireman/EventTicketingAPI)
 
-Server runs on `http://localhost:8080`
+Follow the setup instructions in that repository to run the backend locally.
 
 ### Project Structure
 
 ```
 EventTicketingSDK/
 ├── Sources/
-│   ├── EventTicketingSDK/      # SDK code
-│   └── EventTicketingAPI/       # Vapor backend
+│   └── EventTicketingSDK/      # SDK code
 ├── Tests/
 │   └── EventTicketingSDKTests/  # Test suite
 ├── Examples/
@@ -241,6 +238,9 @@ EventTicketingSDK/
     ├── APIReference.md
     └── GettingStarted.md
 ```
+
+**Related Repositories:**
+- [EventTicketingAPI](https://github.com/cshireman/EventTicketingAPI) - Backend API server
 
 ## 📖 Documentation
 
