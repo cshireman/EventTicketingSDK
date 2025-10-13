@@ -24,4 +24,26 @@ public struct Event: Codable, Identifiable, Sendable {
         case cancelled
         case rescheduled
     }
+
+    public init(
+        id: String,
+        name: String,
+        description: String,
+        venue: Venue,
+        date: Date,
+        doors: Date,
+        imageURL: URL?,
+        ticketTypes: [TicketType],
+        status: EventStatus
+    ) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.venue = venue
+        self.date = date
+        self.doors = doors
+        self.imageURL = imageURL
+        self.ticketTypes = ticketTypes
+        self.status = status
+    }
 }

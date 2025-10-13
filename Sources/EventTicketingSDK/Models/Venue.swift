@@ -13,4 +13,13 @@ public struct Venue: Codable, Sendable {
     public let city: String
     public let state: String
     public let capacity: Int
+
+    public init(id: String, name: String, address: String, city: String, state: String, capacity: Int) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.city = city
+        self.state = state
+        self.capacity = capacity
+    }
 }
