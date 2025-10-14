@@ -24,7 +24,7 @@ struct OrderServiceTests {
         let expectedOrder = createTestOrder(eventID: eventID)
         
         await mockClient.setMockResponse(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationId: reservation.reservationId, paymentMethod: paymentMethod)
         ), response: expectedOrder)
         
         // Act
@@ -53,7 +53,7 @@ struct OrderServiceTests {
         let expectedOrder = createTestOrder(eventID: eventID)
         
         await mockClient.setMockResponse(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationId: reservation.reservationId, paymentMethod: paymentMethod)
         ), response: expectedOrder)
         
         // Act
@@ -77,7 +77,7 @@ struct OrderServiceTests {
         let paymentMethod = createTestPaymentMethod()
         
         await mockClient.setMockError(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationId: reservation.reservationId, paymentMethod: paymentMethod)
         ), error: .serverError)
         
         // Act & Assert
@@ -99,7 +99,7 @@ struct OrderServiceTests {
         let paymentMethod = createTestPaymentMethod()
         
         await mockClient.setMockError(for: .purchaseTicketsWithPayment(
-            PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
+            PurchaseRequest(reservationId: reservation.reservationId, paymentMethod: paymentMethod)
         ), error: .serverError)
         
         // Act & Assert
@@ -409,7 +409,7 @@ struct OrderServiceTests {
         
         await mockClient.setMockResponse(
             for: .purchaseTicketsWithPayment(
-                PurchaseRequest(reservationID: reservation.reservationId, paymentMethod: paymentMethod)
+                PurchaseRequest(reservationId: reservation.reservationId, paymentMethod: paymentMethod)
             ),
             response: confirmedOrder
         )

@@ -99,7 +99,7 @@ enum Endpoint {
 // MARK: - Supporting Types
 
 struct PurchaseRequest: Codable {
-    let reservationID: String
+    let reservationId: String
     let paymentMethod: PaymentMethod
 }
 

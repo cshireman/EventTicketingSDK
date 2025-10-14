@@ -158,7 +158,7 @@ actor MockNetworkClient: NetworkClient {
         case .cancelReservation(let id):
             return "cancelReservation-\(id)"
         case .purchaseTicketsWithPayment(let request):
-            return "purchaseTicketsWithPayment-\(request.reservationID)"
+            return "purchaseTicketsWithPayment-\(request.reservationId)"
         case .order(let id):
             return "order-\(id)"
         case .userOrders(let userID):
