@@ -11,4 +11,11 @@ public struct TicketReservation: Codable, Sendable {
     public let tickets: [Ticket]
     public let expiresAt: Date
     public let total: Decimal
+
+    public init(reservationId: String, tickets: [Ticket], expiresAt: Date, total: Decimal) {
+        self.reservationId = reservationId
+        self.tickets = tickets
+        self.expiresAt = expiresAt
+        self.total = total
+    }
 }
