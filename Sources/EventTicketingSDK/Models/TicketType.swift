@@ -13,4 +13,12 @@ public struct TicketType: Codable, Sendable {
     public let description: String
     public let price: Decimal
     public let availableCount: Int
+
+    public init(id: String, name: String, description: String, price: Decimal, availableCount: Int) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.price = price
+        self.availableCount = availableCount
+    }
 }
