@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TicketType: Codable, Sendable {
+public struct TicketType: Codable, Sendable, Hashable {
     public let id: String
     public let name: String
     public let description: String
