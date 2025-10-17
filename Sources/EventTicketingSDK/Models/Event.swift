@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct Event: Codable, Identifiable, Sendable {
+public struct Event: Codable, Identifiable, Sendable, Hashable, Equatable {
     public let id: String
     public let name: String
     public let description: String
@@ -17,7 +17,7 @@ public struct Event: Codable, Identifiable, Sendable {
     public let ticketTypes: [TicketType]
     public let status: EventStatus
 
-    public enum EventStatus: String, Codable, Sendable {
+    public enum EventStatus: String, Codable, Sendable, Hashable, Equatable {
         case upcoming
         case onSale
         case soldOut
