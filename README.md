@@ -22,7 +22,9 @@ EventTicketingSDK provides a clean, type-safe API for integrating event ticketin
 - ✅ **Modern Swift 6** - Strict concurrency, sendable types
 - ✅ **Async/Await** - Native async patterns throughout
 - ✅ **Actor-based architecture** - Thread-safe by design
-- ✅ **Smart caching** - Configurable cache policies with SwiftData
+- ✅ **Smart caching** - In-memory cache with TTL for optimal performance
+- ✅ **Real-time updates** - WebSocket streaming for live event data
+- ✅ **Event search** - Fast text-based event discovery
 - ✅ **Type-safe API** - Leverage Swift's type system
 - ✅ **Comprehensive testing** - 85%+ test coverage
 - ✅ **Zero dependencies** - Pure Swift implementation
@@ -51,10 +53,13 @@ let config = Configuration(
     apiKey: "your_api_key",
     environment: .production
 )
-EventTicketingClient.configure(with: config)
+EventTicketingClient.configure(config)
 
 // Fetch events
 let events = try await EventTicketingClient.shared.fetchEvents()
+
+// Search events
+let searchResults = try await EventTicketingClient.shared.searchEvents(query: "concert")
 
 // Get event details
 let event = try await EventTicketingClient.shared.getEvent(id: "evt_123")
@@ -76,6 +81,11 @@ let order = try await EventTicketingClient.shared.purchaseTickets(
     reservation: reservation,
     paymentMethod: paymentMethod
 )
+
+// Stream real-time updates
+for await update in await EventTicketingClient.shared.eventUpdates(for: event.id) {
+    print("Event update: \(update.type)")
+}
 
 print("Order confirmed: \(order.id)")
 ```
@@ -132,8 +142,8 @@ The SDK follows a layered architecture with clear separation of concerns:
               ↓
 ┌─────────────────────────────────────┐
 │     Service Layer                   │
-│  (EventService, TicketService)      │
-│  All services are Actors            │
+│  (EventService, TicketService,      │
+│   OrderService) - All are Actors    │
 └─────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────┐
@@ -247,7 +257,6 @@ EventTicketingSDK/
 - [Architecture Overview](Documentation/Architecture.md)
 - [API Reference](Documentation/APIReference.md)
 - [Getting Started Guide](Documentation/GettingStarted.md)
-- [Migration Guide](Documentation/Migration.md)
 
 ## 🤝 Contributing
 
