@@ -1,0 +1,15 @@
+{
+  "originHash" : "260c17ddf3fb6f871169e7e027a0033095e7c177a6f77544abb2965449f22b2f",
+  "pins" : [
+    {
+      "identity" : "eventticketingsdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cshireman/EventTicketingSDK",
+      "state" : {
+        "branch" : "main",
+        "revision" : "52b174b4c947df332a6442359e3989cfa2700780"
+      }
+    }
+  ],
+  "version" : 3
+}
